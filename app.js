@@ -2,13 +2,15 @@ const fs = require('fs')
 const path = require('path') // 解析需要遍历的文件夹
 const {debounce} = require('./utils/tool')
 
-// 目录文件
+// 目录地址替换为，需要读取的文件夹、文件
 const filePath = path.resolve('/Users/lin/Downloads/vue-vben-admin/src/')
 
 // 过滤文件
 function suffixFunc(array) {
     const result = []
     array.map((item, index) => {
+        // 替换为，需要读取的文件后缀
+        // 如：.vue 读取 vue 文件、.ts 读取 ts 文件
         if (item.endsWith('.vue') || item.endsWith('.ts') || !item.includes('.')) {
             result.push(item)
         }
@@ -49,14 +51,14 @@ async function fileDisplay(filePath) {
 
                             let content = fs.readFileSync(filedir, 'utf-8')
                             // 调试少部分文件，判断条件 totalFile < 2
-                            if (true) {
+                            if (totalFile < 20) {
                                 console.info('totalFile', `${filename} ---> 读取第${totalFile}个文件`)
-
+                                // TODO 去掉注释，空行还是会存在的bug
                                 // 去掉 行注释
-                                content = removeLineAnnotation(content)
+                                // content = removeLineAnnotation(content)
 
                                 // 去掉 块注释
-                                content = removeBlockAnnotation(content)
+                                // content = removeBlockAnnotation(content)
 
                                 // 去掉 空行
                                 content = removeEmptyLines(content)
@@ -129,11 +131,11 @@ const removeBlockAnnotation = (content) => {
 const removeEmptyLines = (content) => {
     const reg = /\n(\n)*( )*(\n)*\n/g
     content = content.replace(reg, '\n')
-    const result = new RegExp(reg)
+    // const result = new RegExp(reg)
     // 去掉空行，如果还有空行，再次去除空行
-    if (result.test(content)) {
-        content = content.replace(reg, '\n')
-    }
+    // if (result.test(content)) {
+    //     content = content.replace(reg, '\n')
+    // }
     return content
 }
 
